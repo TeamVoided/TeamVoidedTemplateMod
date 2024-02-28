@@ -30,6 +30,8 @@ modSettings {
 
 //val player_data: String by project
 dependencies {
+    modImplementation(fileTree("libs"))
+
 //    modImplementation(include("eu.pb4", "player-data-api", player_data))
 }
 
