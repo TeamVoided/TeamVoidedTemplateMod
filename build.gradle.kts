@@ -1,38 +1,43 @@
+@file:Suppress("PropertyName")
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("fabric-loom") version "1.5.6"
-    kotlin("jvm") version "1.9.22"
-    kotlin("plugin.serialization") version "1.9.22"
-    id("org.teamvoided.iridium") version "3.1.9"
+    alias(libs.plugins.fabric.loom)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.iridium)
 }
 
-group = project.properties["maven_group"]!!
-version = project.properties["mod_version"]!!
-base.archivesName.set(project.properties["archives_base_name"] as String)
-description = "TeamVoided Template"
+group = property("maven_group")!!
+version = property("mod_version")!!
+base.archivesName.set(property("archives_base_name") as String)
+description = property("description") as String
+
 val modid: String by project
+val mod_name: String by project
 
 repositories {
     mavenCentral()
+//    maven("https://teamvoided.org/releases")
 }
 
 modSettings {
     modId(modid)
-    modName("Team Voided Template")
+    modName(mod_name)
 
     entrypoint("main", "org.teamvoided.template.Template::commonInit")
     entrypoint("client", "org.teamvoided.template.Template::clientInit")
     entrypoint("fabric-datagen", "org.teamvoided.template.TemplateData")
     mixinFile("template.mixins.json")
+
 //    accessWidener("template.accesswidener")
 }
 
-//val player_data: String by project
 dependencies {
     modImplementation(fileTree("libs"))
 
-//    modImplementation(include("eu.pb4", "player-data-api", player_data))
+//    modImplementation(libs.reef)
 }
 
 loom {
