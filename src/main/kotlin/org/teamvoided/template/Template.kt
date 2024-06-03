@@ -18,6 +18,6 @@ object Template {
     fun clientInit() {
         log.info("Hello from Client")
     }
-
-    fun id(path: String) = Identifier(MODID, path)
+        //UNMAPPED will break later
+    fun id(path: String) = Identifier.method_60655(MODID, path)
 }

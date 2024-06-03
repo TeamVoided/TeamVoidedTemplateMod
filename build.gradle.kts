@@ -23,6 +23,7 @@ val curse_id: String? by project
 
 repositories {
     maven("https://teamvoided.org/releases")
+    maven("https://maven.terraformersmc.com/") { name = "Terraformers" }
     mavenCentral()
 }
 
@@ -41,6 +42,7 @@ modSettings {
 dependencies {
     modImplementation(fileTree("libs"))
     modImplementation(libs.farrow)
+//    modImplementation(libs.modmenu)
 
 }
 
