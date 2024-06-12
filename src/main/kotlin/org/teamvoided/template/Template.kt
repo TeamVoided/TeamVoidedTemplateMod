@@ -11,13 +11,9 @@ object Template {
     @JvmField
     val log: Logger = LoggerFactory.getLogger(Template::class.simpleName)
 
-    fun commonInit() {
+    fun init() {
         log.info("Hello from Common")
     }
 
-    fun clientInit() {
-        log.info("Hello from Client")
-    }
-        //UNMAPPED will break later
-    fun id(path: String) = Identifier.method_60655(MODID, path)
+    fun id(path: String) = Identifier.of(MODID, path)
 }

@@ -1,5 +1,6 @@
 @file:Suppress("PropertyName", "VariableNaming")
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -13,11 +14,8 @@ plugins {
 
 group = property("maven_group")!!
 version = property("mod_version")!!
-base.archivesName.set(property("archives_base_name") as String)
-description = property("description") as String
+base.archivesName.set(modSettings.modId())
 
-val modid: String by project
-val mod_name: String by project
 val modrinth_id: String? by project
 val curse_id: String? by project
 
@@ -27,33 +25,34 @@ repositories {
     mavenCentral()
 }
 
+println("Task: " + gradle.startParameter.taskNames.joinToString(","))
+
 modSettings {
-    modId(modid)
-    modName(mod_name)
+    entrypoint("main", "org.teamvoided.template.Template::init")
+    entrypoint("client", "org.teamvoided.template.TemplateClient::init")
+    entrypoint("fabric-datagen", "org.teamvoided.template.data.gen.TemplateData")
 
-    entrypoint("main", "org.teamvoided.template.Template::commonInit")
-    entrypoint("client", "org.teamvoided.template.Template::clientInit")
-    entrypoint("fabric-datagen", "org.teamvoided.template.TemplateData")
-    mixinFile("$modid.mixins.json")
-
-//    accessWidener("$modid.accesswidener")
+    mixinFile("${modId()}.client.mixins.json")
+//    mixinFile("${modId()}.mixins.json")
+//
+//    accessWidener("${modId()}.client.accesswidener")
+//    accessWidener("${modId()}.accesswidener")
 }
 
 dependencies {
     modImplementation(fileTree("libs"))
-    modImplementation(libs.farrow)
-//    modImplementation(libs.modmenu)
-
+    modImplementation(libs.modmenu)
 }
 
 loom {
+    splitEnvironmentSourceSets()
     runs {
         create("DataGen") {
             client()
             ideConfigGenerated(true)
             vmArg("-Dfabric-api.datagen")
             vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
-            vmArg("-Dfabric-api.datagen.modid=${modid}")
+            vmArg("-Dfabric-api.datagen.modid=${modSettings.modId()}")
             runDir("build/datagen")
         }
 
@@ -76,12 +75,20 @@ tasks {
     }
 
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = targetJavaVersion.toString()
+        compilerOptions.jvmTarget = JvmTarget.JVM_21
     }
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(JavaVersion.toVersion(targetJavaVersion).toString()))
         withSourcesJar()
+    }
+    jar {
+        val valTaskNames = gradle.startParameter.taskNames
+        if (!valTaskNames.contains("runDataGen")) {
+            exclude("org/teamvoided/template/data/gen/*")
+        } else {
+            println("Running datagen for task ${valTaskNames.joinToString(" ")}")
+        }
     }
 }
 
