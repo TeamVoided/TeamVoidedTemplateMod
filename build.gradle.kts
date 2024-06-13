@@ -34,8 +34,6 @@ modSettings {
 
     mixinFile("${modId()}.client.mixins.json")
 //    mixinFile("${modId()}.mixins.json")
-//
-//    accessWidener("${modId()}.client.accesswidener")
 //    accessWidener("${modId()}.accesswidener")
 }
 
