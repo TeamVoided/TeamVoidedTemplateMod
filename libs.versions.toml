@@ -1,14 +1,12 @@
 [versions]
-kotlin = "2.0.20"
-fabric-loom = "1.7-SNAPSHOT"
+kotlin = "2.0.21"
+fabric-loom = "1.8-SNAPSHOT"
 iridium = "3.3.2"
 
-#farrow = "1.0.0+arrow.1.2.4"
-modmenu = "11.0.2"
-emi = "1.1.13+1.21"
+modmenu = "11.0.3"
+emi = "1.1.18+1.21.1"
 
 [libraries]
-#farrow = { module = "net.wiredtomato:farrow", version.ref = "farrow" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 emi = { module = "dev.emi:emi-fabric", version.ref = "emi" }
 
